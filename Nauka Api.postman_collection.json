@@ -1,0 +1,360 @@
+{
+  "info": {
+    "_postman_id": "132e929f-1873-4669-a3ea-17e72b4e6685",
+    "name": "Nauka Api",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "40863953"
+  },
+  "item": [
+    {
+      "name": "Add",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 201\", function () {\n    pm.response.to.have.status(201);\n});\n\npm.test(\"Response is JSON\", function () {\n    pm.response.to.be.json;\n});\n\npm.test(\"Response has id\", function () {\n    const json = pm.response.json();\n    pm.expect(json).to.have.property(\"id\");\n});\n\npm.test(\"Response has title\", function () {\n    const json = pm.response.json();\n    pm.expect(json).to.have.property(\"title\");\n});\n\npm.test(\"Response has price\", function () {\n    const json = pm.response.json();\n    pm.expect(json).to.have.property(\"price\");\n    pm.expect(json.price).to.be.a(\"number\");\n});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"title\": \"{{$randomProductName}}\",\r\n    \"price\": {{$randomPrice}}\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/products/add",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "products",
+            "add"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get All",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {\n    pm.response.to.have.status(200);\n});\n\npm.test(\"Response is JSON\", function () {\n    pm.response.to.be.json;\n});\n\npm.test(\"Response has products array\", function () {\n    const json = pm.response.json();\n    pm.expect(json).to.have.property(\"products\");\n    pm.expect(json.products).to.be.an(\"array\");\n});\n\npm.test(\"Products array is not empty\", function () {\n    const json = pm.response.json();\n    pm.expect(json.products.length).to.be.greaterThan(0);\n});\n\npm.test(\"Response has total count\", function () {\n    const json = pm.response.json();\n    pm.expect(json).to.have.property(\"total\");\n    pm.expect(json.total).to.be.a(\"number\");\n});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/products",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "products"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get All Limit",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {\n    pm.response.to.have.status(200);\n});\n\npm.test(\"Response is JSON\", function () {\n    pm.response.to.be.json;\n});\n\npm.test(\"Response has products array\", function () {\n    const json = pm.response.json();\n    pm.expect(json).to.have.property(\"products\");\n    pm.expect(json.products).to.be.an(\"array\");\n});\n\npm.test(\"Products array respects limit of 10\", function () {\n    const json = pm.response.json();\n    pm.expect(json.products.length).to.be.at.most(10);\n});\n\npm.test(\"Response has limit field\", function () {\n    const json = pm.response.json();\n    pm.expect(json).to.have.property(\"limit\");\n    pm.expect(json.limit).to.eql(10);\n});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/products?limit=10",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "products"
+          ],
+          "query": [
+            {
+              "key": "limit",
+              "value": "10",
+              "description": "5"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get All Sort By",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {\n    pm.response.to.have.status(200);\n});\n\npm.test(\"Response is JSON\", function () {\n    pm.response.to.be.json;\n});\n\npm.test(\"Response has products array\", function () {\n    const json = pm.response.json();\n    pm.expect(json).to.have.property(\"products\");\n    pm.expect(json.products).to.be.an(\"array\");\n});\n\npm.test(\"Each product has a price field\", function () {\n    const json = pm.response.json();\n    json.products.forEach(function(product) {\n        pm.expect(product).to.have.property(\"price\");\n        pm.expect(product.price).to.be.a(\"number\");\n    });\n});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/products?sortBy=price",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "products"
+          ],
+          "query": [
+            {
+              "key": "sortBy",
+              "value": "price",
+              "description": "5"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get All Pagination",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {\n    pm.response.to.have.status(200);\n});\n\npm.test(\"Response is JSON\", function () {\n    pm.response.to.be.json;\n});\n\npm.test(\"Response has products array\", function () {\n    const json = pm.response.json();\n    pm.expect(json).to.have.property(\"products\");\n    pm.expect(json.products).to.be.an(\"array\");\n});\n\npm.test(\"Products array respects limit of 10\", function () {\n    const json = pm.response.json();\n    pm.expect(json.products.length).to.be.at.most(10);\n});\n\npm.test(\"Response has skip field\", function () {\n    const json = pm.response.json();\n    pm.expect(json).to.have.property(\"skip\");\n    pm.expect(json.skip).to.eql(10);\n});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/products?limit=10&skip=10",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "products"
+          ],
+          "query": [
+            {
+              "key": "limit",
+              "value": "10"
+            },
+            {
+              "key": "skip",
+              "value": "10"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get by Id",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {\n    pm.response.to.have.status(200);\n});\n\npm.test(\"Response is JSON\", function () {\n    pm.response.to.be.json;\n});\n\npm.test(\"Response has id\", function () {\n    const json = pm.response.json();\n    pm.expect(json).to.have.property(\"id\");\n    pm.expect(json.id).to.eql(1);\n});\n\npm.test(\"Response has title\", function () {\n    const json = pm.response.json();\n    pm.expect(json).to.have.property(\"title\");\n    pm.expect(json.title).to.be.a(\"string\");\n});\n\npm.test(\"Response has price\", function () {\n    const json = pm.response.json();\n    pm.expect(json).to.have.property(\"price\");\n    pm.expect(json.price).to.be.a(\"number\");\n});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/products/1",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "products",
+            "1"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Change price",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {\n    pm.response.to.have.status(200);\n});\n\npm.test(\"Response is JSON\", function () {\n    pm.response.to.be.json;\n});\n\npm.test(\"Response has id\", function () {\n    const json = pm.response.json();\n    pm.expect(json).to.have.property(\"id\");\n    pm.expect(json.id).to.eql(2);\n});\n\npm.test(\"Price was updated to 9.99\", function () {\n    const json = pm.response.json();\n    pm.expect(json).to.have.property(\"price\");\n    pm.expect(json.price).to.eql(9.99);\n});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "PATCH",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"price\": 9.99\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/products/2",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "products",
+            "2"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Change article",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {\n    pm.response.to.have.status(200);\n});\n\npm.test(\"Response is JSON\", function () {\n    pm.response.to.be.json;\n});\n\npm.test(\"Response has id\", function () {\n    const json = pm.response.json();\n    pm.expect(json).to.have.property(\"id\");\n    pm.expect(json.id).to.eql(2);\n});\n\npm.test(\"Title was updated\", function () {\n    const json = pm.response.json();\n    pm.expect(json).to.have.property(\"title\");\n    pm.expect(json.title).to.eql(\"Another nice product\");\n});\n\npm.test(\"Response has category\", function () {\n    const json = pm.response.json();\n    pm.expect(json).to.have.property(\"category\");\n    pm.expect(json.category).to.be.a(\"string\");\n});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"id\": 2,\r\n    \"title\": \"Another nice product\",\r\n    \"price\": 34.99,\r\n    \"discountPercentage\": 1.19,\r\n    \"stock\": 34,\r\n    \"rating\": 2.86,\r\n    \"images\": [\r\n        \"https://cdn.dummyjson.com/product-images/beauty/eyeshadow-palette-with-mirror/1.webp\"\r\n    ],\r\n    \"thumbnail\": \"https://cdn.dummyjson.com/product-images/beauty/eyeshadow-palette-with-mirror/thumbnail.webp\",\r\n    \"description\": \"The Eyeshadow Palette with Mirror offers a versatile range of eyeshadow shades for creating stunning eye looks. With a built-in mirror, it's convenient for on-the-go makeup application.\",\r\n    \"brand\": \"Glamour Beauty\",\r\n    \"category\": \"beauty\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/products/2",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "products",
+            "2"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Delete article",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {\n    pm.response.to.have.status(200);\n});\n\npm.test(\"Response is JSON\", function () {\n    pm.response.to.be.json;\n});\n\npm.test(\"Response has id\", function () {\n    const json = pm.response.json();\n    pm.expect(json).to.have.property(\"id\");\n    pm.expect(json.id).to.eql(2);\n});\n\npm.test(\"Response has isDeleted flag\", function () {\n    const json = pm.response.json();\n    pm.expect(json).to.have.property(\"isDeleted\");\n    pm.expect(json.isDeleted).to.be.true;\n});\n\npm.test(\"Response has deletedOn timestamp\", function () {\n    const json = pm.response.json();\n    pm.expect(json).to.have.property(\"deletedOn\");\n});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/products/2",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "products",
+            "2"
+          ]
+        }
+      },
+      "response": []
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": ""
+    }
+  ]
+}
